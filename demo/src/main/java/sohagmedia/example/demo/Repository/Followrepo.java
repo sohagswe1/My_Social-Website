@@ -8,5 +8,6 @@ import sohagmedia.example.demo.Entity.Follow;
 public interface Followrepo extends JpaRepository<Follow, Long> {
     //follow sohag...........................follow....
     //ddd
+    //hfkdhfkldjahfldsgfrwyutr8ywe
 
 }
