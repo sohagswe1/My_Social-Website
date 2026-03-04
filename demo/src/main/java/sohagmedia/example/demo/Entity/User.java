@@ -22,6 +22,8 @@ public class User {
     private String password;
     private String profilePicture;
 
+
+
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
