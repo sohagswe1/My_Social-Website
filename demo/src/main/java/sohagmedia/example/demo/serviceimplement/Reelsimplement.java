@@ -1,6 +1,7 @@
 package sohagmedia.example.demo.serviceimplement;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sohagmedia.example.demo.Entity.Reel;
 import sohagmedia.example.demo.Repository.Reelsrepo;
@@ -12,7 +13,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class Reelsimplement implements ReelsService {
-
+  @Autowired
     private final Reelsrepo reelRepository;
 
     @Override

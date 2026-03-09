@@ -1,9 +1,11 @@
 package sohagmedia.example.demo.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class User {
 
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Post> posts;
 
 
