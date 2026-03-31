@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import sohagmedia.example.demo.Entity.User;
@@ -34,12 +35,15 @@ public class Usercontoller {
                 );
 
         if(authentication.isAuthenticated()) {
+
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
             return "Login Successful";
         }
 
         return "Login Failed";
     }
-
     @PostMapping("/register")
     public User registerUser(@RequestBody User user) {
 
