@@ -8,13 +8,13 @@ import sohagmedia.example.demo.Service.ReelsService;
 
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/reels")
 @RequiredArgsConstructor
 public class Reelscontroller {
-
-    private final ReelsService reelsService;
+@Autowired
+    private ReelsService reelsService;
 
     @PostMapping
     public Reel saveReel(@RequestBody Reel reel) {

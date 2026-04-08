@@ -8,7 +8,7 @@ import sohagmedia.example.demo.Service.CommentService;
 
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/comments")
 @RequiredArgsConstructor

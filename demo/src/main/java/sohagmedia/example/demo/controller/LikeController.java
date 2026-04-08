@@ -8,7 +8,7 @@ import sohagmedia.example.demo.Service.LikeService;
 
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/likes")
 @RequiredArgsConstructor

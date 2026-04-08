@@ -1,6 +1,7 @@
 package sohagmedia.example.demo.serviceimplement;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sohagmedia.example.demo.Entity.User;
 import sohagmedia.example.demo.Repository.UserRepo;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class Userserviceimplement implements Userservice {
-
+     @Autowired
     private final UserRepo userRepository;
 
     @Override
@@ -34,5 +35,10 @@ public class Userserviceimplement implements Userservice {
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+       return  userRepository.findByEmail(email);
     }
 }

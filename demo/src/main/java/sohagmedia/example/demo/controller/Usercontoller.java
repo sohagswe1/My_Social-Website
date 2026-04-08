@@ -3,6 +3,8 @@ package sohagmedia.example.demo.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,15 +16,17 @@ import sohagmedia.example.demo.Service.Userservice;
 
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class Usercontoller {
-
-    private final Userservice userservice;
-    private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder passwordEncoder;
+     @Autowired
+    private  Userservice userservice;
+        @Autowired
+    private  AuthenticationManager authenticationManager;
+        @Autowired
+    private  PasswordEncoder passwordEncoder;
     @PostMapping("/login")
     public String login(@RequestBody User user) {
 
@@ -45,11 +49,14 @@ public class Usercontoller {
         return "Login Failed";
     }
     @PostMapping("/register")
-    public User registerUser(@RequestBody User user) {
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        return userservice.saveUser(user);
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User savedUser = userservice.saveUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedUser); // এটি রিঅ্যাক্টকে সাকসেস কোড দিবে
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Registration Failed: " + e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
@@ -65,5 +72,11 @@ public class Usercontoller {
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
         userservice.deleteUser(id);
+    }
+
+    @GetMapping("/email/{email}")
+    User getUserByEmail(@RequestParam String email) {
+        return  userservice.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
