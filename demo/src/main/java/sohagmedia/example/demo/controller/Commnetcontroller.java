@@ -17,7 +17,7 @@ public class Commnetcontroller {
 
     private final CommentService commentService;
 
-    @PostMapping
+    @PostMapping("/save")
     public Comment saveComment(@RequestBody Comment comment) {
         return commentService.saveComment(comment);
     }

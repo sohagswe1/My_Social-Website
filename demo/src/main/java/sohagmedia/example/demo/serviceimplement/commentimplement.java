@@ -1,9 +1,15 @@
 package sohagmedia.example.demo.serviceimplement;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sohagmedia.example.demo.Entity.Comment;
+import sohagmedia.example.demo.Entity.Post;
+import sohagmedia.example.demo.Entity.User;
 import sohagmedia.example.demo.Repository.Commentrepo;
+import sohagmedia.example.demo.Repository.PostRepo;
+import sohagmedia.example.demo.Repository.UserRepo;
 import sohagmedia.example.demo.Service.CommentService;
 
 import java.util.List;
@@ -12,11 +18,29 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class commentimplement implements CommentService {
-
-    private final Commentrepo commentRepository;
+    @Autowired
+    private Commentrepo commentRepository;
+        @Autowired
+        private UserRepo userRepository;
+        @Autowired
+        private PostRepo postRepository;
 
     @Override
+    @Transactional
     public Comment saveComment(Comment comment) {
+        // ১. ফ্রন্টএন্ড থেকে আসা ইমেইল দিয়ে ডাটাবেস থেকে আসল User খুঁজে বের করা
+        User user = userRepository.findByEmail(comment.getUser().getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + comment.getUser().getEmail()));
+
+        // ২. আইডি দিয়ে আসল Post খুঁজে বের করা
+        Post post = postRepository.findById(comment.getPost().getId())
+                .orElseThrow(() -> new RuntimeException("Post not found with ID: " + comment.getPost().getId()));
+
+        // ৩. ডাটাবেস থেকে পাওয়া আসল অবজেক্টগুলো সেট করা
+        comment.setUser(user);
+        comment.setPost(post);
+
+        // ৪. এখন সেভ করলে ডাটাবেসে user_id এবং post_id ঠিকমতো বসবে
         return commentRepository.save(comment);
     }
 

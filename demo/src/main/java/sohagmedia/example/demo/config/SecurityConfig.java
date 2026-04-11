@@ -27,17 +27,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable()).cors(Customizer.withDefaults())
-
+                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/login","/users/register","/posts/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-
-                .httpBasic(Customizer.withDefaults());
-
+                        .anyRequest().permitAll() // আপাতত সব পারমিট করে চেক করো
+                );
         return http.build();
     }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

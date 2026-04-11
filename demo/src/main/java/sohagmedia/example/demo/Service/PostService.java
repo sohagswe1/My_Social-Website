@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface PostService {
 
-    String  savePost(String  content,String email, MultipartFile file);
+    Post  savePost(String  content,String email, MultipartFile file);
 
     Optional<Post> getPostById(Long id);
 

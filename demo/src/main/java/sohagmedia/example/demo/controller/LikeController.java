@@ -2,6 +2,7 @@ package sohagmedia.example.demo.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sohagmedia.example.demo.Entity.Like;
 import sohagmedia.example.demo.Service.LikeService;
@@ -16,7 +17,7 @@ public class LikeController {
 
     private final LikeService likeService;
 
-    @PostMapping
+    @PostMapping("/save")
     public Like saveLike(@RequestBody Like like) {
         return likeService.saveLike(like);
     }
@@ -34,5 +35,14 @@ public class LikeController {
     @DeleteMapping("/{id}")
     public void deleteLike(@PathVariable Long id) {
         likeService.deleteLike(id);
+    }
+
+    @PostMapping("/{postId}")
+    public ResponseEntity<String> toggleLike(
+            @PathVariable Long postId,
+            @RequestParam String email) {
+
+        String result = likeService.toggleLike(email, postId).toString();
+        return ResponseEntity.ok(result);
     }
 }

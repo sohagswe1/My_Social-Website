@@ -2,6 +2,8 @@ package sohagmedia.example.demo.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sohagmedia.example.demo.Entity.Post;
@@ -18,18 +20,24 @@ import java.util.Optional;
 public class Postcontoller {
 @Autowired
     private  PostService postService;
-@Autowired
-    private  Userservice userservice;
+@Autowired    private  Userservice userservice;
 
-    @PostMapping
-    public String savePost(
+    @PostMapping("/save")
+    public ResponseEntity<?> savePost(
             @RequestParam(value = "content", required = false) String content,
             @RequestParam("email") String email,
             @RequestParam(value = "file", required = false) MultipartFile file) {
 
-        // কন্ট্রোলারে আর নতুন পোস্ট অবজেক্ট বানানোর দরকার নেই,
-        // সব কাজ সরাসরি সার্ভিসের মাধ্যমে করো।
-        return postService.savePost(content, email, file);
+        try {
+            // সার্ভিস কল করে পোস্ট সেভ করো
+            Post savedPost = postService.savePost(content, email, file);
+            return ResponseEntity.ok(savedPost);
+        } catch (Exception e) {
+            // কনসোলে এরর ডিটেইলস প্রিন্ট করবে
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error saving post: " + e.getMessage());
+        }
     }
     @GetMapping("/{id}")
     public Optional<Post> getPostById(@PathVariable Long id) {
