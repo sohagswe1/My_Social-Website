@@ -32,15 +32,15 @@ public class commentimplement implements CommentService {
         User user = userRepository.findByEmail(comment.getUser().getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + comment.getUser().getEmail()));
 
-        // ২. আইডি দিয়ে আসল Post খুঁজে বের করা
+
         Post post = postRepository.findById(comment.getPost().getId())
                 .orElseThrow(() -> new RuntimeException("Post not found with ID: " + comment.getPost().getId()));
 
-        // ৩. ডাটাবেস থেকে পাওয়া আসল অবজেক্টগুলো সেট করা
+
         comment.setUser(user);
         comment.setPost(post);
 
-        // ৪. এখন সেভ করলে ডাটাবেসে user_id এবং post_id ঠিকমতো বসবে
+
         return commentRepository.save(comment);
     }
 

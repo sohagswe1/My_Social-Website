@@ -1,5 +1,6 @@
 package sohagmedia.example.demo.Service;
 
+import org.springframework.web.multipart.MultipartFile;
 import sohagmedia.example.demo.Entity.Reel;
 
 import java.util.List;
@@ -14,5 +15,8 @@ public interface ReelsService {
     List<Reel> getAllReels();
 
     void deleteReel(Long id);
+
+    // নতুন method - email এবং video দিয়ে reel upload করুন
+    Reel uploadReel(String email, MultipartFile video, String caption, MultipartFile thumbnail);
 
 }

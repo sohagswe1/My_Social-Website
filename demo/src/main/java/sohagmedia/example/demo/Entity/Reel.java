@@ -17,25 +17,31 @@ public class Reel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String videourl;
+    private String videoUrl;
 
-    private String thumbnailurl;
+    private String thumbnailUrl;
 
     @Column(columnDefinition = "TEXT")
     private String caption;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private Long viewcount;
+    private Long viewCount = 0L;
 
-    private Long likecount;
+    private Long likeCount = 0L;
 
-    private LocalDateTime createdat;
+    private LocalDateTime createdAt;
 
     @PrePersist
-    public void oncreate() {
-        this.createdat = LocalDateTime.now();
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        if (this.viewCount == null) {
+            this.viewCount = 0L;
+        }
+        if (this.likeCount == null) {
+            this.likeCount = 0L;
+        }
     }
 }

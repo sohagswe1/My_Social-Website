@@ -37,8 +37,20 @@ public class LikeController {
         likeService.deleteLike(id);
     }
 
+    @PostMapping("/toggle")
+    public ResponseEntity<?> toggleLike(
+            @RequestParam String email,
+            @RequestParam Long postId) {
+        try {
+            var result = likeService.toggleLike(email, postId);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/{postId}")
-    public ResponseEntity<String> toggleLike(
+    public ResponseEntity<String> toggleLikeLegacy(
             @PathVariable Long postId,
             @RequestParam String email) {
 
